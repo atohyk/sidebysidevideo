@@ -38,17 +38,17 @@ if __name__ == "__main__":
 				print('Folder does not contain exactly two files.')
 				exit(1)
 			vidnames=[os.path.join(args.folderpath,i) for i in vidnames]
+	else:
+		if os.path.isfile(args.video1path):
+			vidnames.append(args.video1path)
 		else:
-			if os.path.isfile(args.video1path):
-				vidnames[0] = args.video1path
-			else:
-				print(args.video1path,'is not a valid file.')
-				exit(1)
-			if os.path.isfile(args.video2path):
-				vidnames[1] = args.video2path
-			else:
-				print(args.video2path,'is not a valid file.')
-				exit(1)
+			print(args.video1path,'is not a valid file.')
+			exit(1)
+		if os.path.isfile(args.video2path):
+			vidnames.append(args.video2path)
+		else:
+			print(args.video2path,'is not a valid file.')
+			exit(1)
 
 	for vid in vidnames:
 		if not vid[vid.rfind('.'):] in supportedformats:
@@ -79,8 +79,10 @@ if __name__ == "__main__":
 		exit(1)
 
 	#all checks are complete, call joinvideo
+	print(vidnames)
 	print('Joining ',vidnames[0], 'and', vidnames[1],'.')
 	start_time = time.time()
-	cs.joinVideo(vidnames[0], vidnames[1], outpath, sideBorder, middleBorder, args.debug)
+	numframes = cs.joinVideo(vidnames[0], vidnames[1], outpath, sideBorder, middleBorder, args.debug)
 	time_taken = (time.time() - start_time) * 1000
 	print("Total Time Taken (ms): "+ str(time_taken)+"\n")
+	print("FPS: ",time_taken/numframes)

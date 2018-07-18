@@ -35,6 +35,8 @@ def joinVideo(vidpath1, vidpath2, outpath, sideBorder = 0, middleBorder = 30, de
 	fourcc = cv2.VideoWriter_fourcc(*'XVID')
 	outvid = cv2.VideoWriter(outpath, fourcc, vid1.get(cv2.CAP_PROP_FPS), (canvasWidth, canvasHeight))
 
+	framecounter = 1
+
 	#compute canvas, make the output video
 	while ret1!=False and ret2!=False:
 		canvas = np.zeros((canvasHeight, canvasWidth, 3), dtype = np.uint8)
@@ -49,10 +51,12 @@ def joinVideo(vidpath1, vidpath2, outpath, sideBorder = 0, middleBorder = 30, de
 		cv2.waitKey(1)
 		ret1, frame1 = vid1.read()
 		ret2,frame2 = vid2.read()
+		framecounter+=1
 
 	vid1.release()
 	vid2.release()
 	outvid.release()
+	return framecounter
 
 if __name__ == '__main__':
 	print('This file is not meant to be ran as main, call this file through videojoiner.')
